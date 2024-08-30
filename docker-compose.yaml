@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  zitadel:
+    # restart: "always"
+    networks:
+      - "zitadel_network"
+    image: "ghcr.io/zitadel/zitadel:latest"
+    command: 'start-from-init --config /zitadel-config.yaml --config /zitadel-secret.yaml --steps /zitadel-steps.yaml --masterkey "Koyo4sUhyeBgteAhyui7y87bgshyr7Tg" --tlsMode disabled'
+    # depends_on:
+    #   - my-postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./zitadel-steps.yaml:/zitadel-steps.yaml:ro"
+      - "./zitadel-secret.yaml:/zitadel-secret.yaml:ro"
+      - "./zitadel-config.yaml:/zitadel-config.yaml:ro"
+
+networks:
+  zitadel_network:
+    external: true
+    driver: bridge
